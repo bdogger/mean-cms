@@ -1,0 +1,42 @@
+<div class="row">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
+        <section ng-controller="PagesController">
+            <div ng-if="authenticated.user">
+                <h1>Create New Page</h1>
+
+                <form ng-submit="create()" novalidate>
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" id="title" ng-model="title" placeholder="Title" required
+                               class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="home-page">Set as Home Page</label>
+                        <input type="checkbox" id="home-page" ng-model="homePage" />
+                    </div>
+                    <div form-group>
+                        <label for="content">Content</label>
+                        <textarea ckeditor ng-model="content" id="content" cols="30" rows="10" placeholder="Content"
+                                  class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <br/>
+                        <button class="btn btn-primary"><span class="fa fa-floppy-o"></span> Save</button>
+                        <br/><br/>
+                        <a class="btn btn-warning" ng-href="/#!/pages"><span class="fa fa-arrow-left"></span> Back</a>
+                    </div>
+                    <div ng-show="error" class="alert alert-danger">
+                        <strong ng-bind="error"></strong>
+                    </div>
+                </form>
+            </div>
+            <div ng-if="!authenticated.user">
+                <div class="alert alert-danger"><strong>ERROR: </strong>This page requires authentication</div>
+            </div>
+
+
+        </section>
+        <div class="col-lg-2"></div>
+    </div>
+</div>

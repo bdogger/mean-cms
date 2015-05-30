@@ -1,0 +1,9 @@
+$icon-font-path: "../lib/bootstrap-sass-official/assets/fonts/bootstrap/";
+$fa-font-path: "../lib/components-font-awesome/fonts/";
+
+@import "../lib/bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
+@import "../lib/components-font-awesome/scss/font-awesome.scss";
+
+#sign-in, #sign-up {
+  padding-top: 30px;
+}

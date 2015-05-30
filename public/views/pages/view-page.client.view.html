@@ -1,0 +1,13 @@
+<section ng-controller="PagesController" ng-init="findOne()">
+
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            <h1 ng-bind="page.title"></h1>
+
+            <div ng-bind-html="trustedContent"></div>
+
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+</section>
