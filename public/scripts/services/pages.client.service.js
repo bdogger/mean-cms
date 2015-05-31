@@ -5,6 +5,16 @@ angular.module('samuraiSoftware')
     }, {
       update: {
         method: 'PUT'
+      },
+      bySeoTitle: {
+        method: 'GET',
+        isArray: true,
+        params: {seoTitle: '@seoTitle'}
+      },
+      homePage: {
+        method: 'GET',
+        isArray: true,
+        params: {home: true}
       }
     });
   }]);

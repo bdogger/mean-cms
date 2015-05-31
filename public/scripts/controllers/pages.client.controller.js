@@ -1,13 +1,18 @@
 angular.module('samuraiSoftware')
   .controller('PagesController',
-  ['$scope', '$routeParams', '$location', '$sce', 'authenticationService', 'Pages',
-    function ($scope, $routeParams, $location, $sce, authenticationService, Pages) {
+  ['$scope', '$routeParams', '$location', '$sce', '$window', 'authenticationService', 'Pages',
+    function ($scope, $routeParams, $location, $sce, $window, authenticationService, Pages) {
+      $scope.options = {
+        allowedContent: true
+      };
 
       $scope.authenticated = authenticationService;
 
       $scope.create = function () {
         var page = new Pages({
           title: this.title,
+          homePage: this.homePage,
+          seoTitle: this.seoTitle,
           content: this.content
         });
 
@@ -32,9 +37,19 @@ angular.module('samuraiSoftware')
         });
       };
 
+      $scope.findOneView = function () {
+        var pages = Pages.bySeoTitle({
+          seoTitle: $routeParams.seoTitle
+        }, function () {
+          $scope.page = pages[0];
+          $window.document.title = $scope.page.title;
+          $scope.trustedContent = $sce.trustAsHtml($scope.page.content);
+        });
+      };
+
       $scope.update = function () {
         $scope.page.$update(function () {
-            $location.path('pages/' + $scope.page._id);
+            $location.path('/' + $scope.page.seoTitle);
           },
           function (errorResponse) {
             $scope.error = errorResponse.data.message;

@@ -1,9 +1,52 @@
 $icon-font-path: "../lib/bootstrap-sass-official/assets/fonts/bootstrap/";
 $fa-font-path: "../lib/components-font-awesome/fonts/";
 
+$navbar-default-color: #ffffff;
+$navbar-default-bg: #000000;
+$navbar-default-link-color: #ffffff;
+$navbar-default-link-active-color: #ffffff;
+$navbar-default-link-hover-color: #666;
+
 @import "../lib/bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 @import "../lib/components-font-awesome/scss/font-awesome.scss";
+@import url(http://fonts.googleapis.com/css?family=IM+Fell+English|Merriweather&subset=latin,latin-ext);
+
+
+.navbar {
+
+  li, a {
+    font-size: large;
+    font-family: 'IM Fell English', serif;
+    font-weight: 400;
+  }
+}
 
 #sign-in, #sign-up {
   padding-top: 30px;
+}
+
+.special-text {
+  font-family: 'IM Fell English', serif;
+  font-weight: 400;
+}
+
+body {
+  font-family: 'Merriweather', serif;
+}
+
+body:after {
+  background-image: url("../img/pattern.jpg");
+  content: "";
+  opacity: 0.7;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+.row {
+  margin-left: 0;
+  margin-right: 0;
 }

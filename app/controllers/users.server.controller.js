@@ -1,42 +1,67 @@
-var User = require('mongoose').model('User');
+// Code taken directly from MEAN Web Development and modified slightly
+// https://www.packtpub.com/web-development/mean-web-development
 
-exports.create = function (req, res, next) {
-  var user = new User(req.body);
-};
 
-var getErrorMessage = function (err) {
-  var messages = [];
+// Invoke 'strict' JavaScript mode
+'use strict';
 
+// Load the module dependencies
+var User = require('mongoose').model('User'),
+  passport = require('passport');
+
+// Create a new error handling controller method
+var getErrorMessage = function(err) {
+  // Define the error message variable
+  var message = '';
+
+  // If an internal MongoDB error occurs get the error message
   if (err.code) {
     switch (err.code) {
+      // If a unique index error occurs set the message error
       case 11000:
       case 11001:
-        messages.push('Username already exists');
+        message = 'Username already exists';
         break;
+      // If a general error occurs set the message error
       default:
-        messages.push('Something went wrong');
+        message = 'Something went wrong';
     }
   } else {
+    // Grab the first error message from a list of possible errors
     for (var errName in err.errors) {
-      if (err.errors[errName].message) messages.push(err.errors[errName].message);
+      if (err.errors[errName].message) message = err.errors[errName].message;
     }
   }
-  return messages;
+
+  // Return the message error
+  return message;
 };
 
-exports.renderSignin = function (req, res, next) {
+// Create a new controller method that renders the signin page
+exports.renderSignin = function(req, res, next) {
+  // If user is not connected render the signin page, otherwise redirect the user back to the main application page
   if (!req.user) {
-    res.render('authentication/signin',
-      {title: 'Sign-in Form', messages: req.flash('error') || req.flash('info')});
+    // Use the 'response' object to render the signin page
+    res.render('signin', {
+      // Set the page title variable
+      title: 'Sign-in Form',
+      // Set the flash message variable
+      messages: req.flash('error') || req.flash('info')
+    });
   } else {
     return res.redirect('/');
   }
 };
 
-exports.renderSignup = function (req, res, next) {
+// Create a new controller method that renders the signup page
+exports.renderSignup = function(req, res, next) {
+  // If user is not connected render the signup page, otherwise redirect the user back to the main application page
   if (!req.user) {
-    res.render('authentication/signup', {
+    // Use the 'response' object to render the signup page
+    res.render('signup', {
+      // Set the page title variable
       title: 'Sign-up Form',
+      // Set the flash message variable
       messages: req.flash('error')
     });
   } else {
@@ -44,88 +69,63 @@ exports.renderSignup = function (req, res, next) {
   }
 };
 
-exports.signup = function (req, res, next) {
+// Create a new controller method that creates new 'regular' users
+exports.signup = function(req, res, next) {
+  // If user is not connected, create and login a new user, otherwise redirect the user back to the main application page
   if (!req.user) {
+    // Create a new 'User' model instance
     var user = new User(req.body);
     var message = null;
 
+    // Set the user provider property
     user.provider = 'local';
 
-    user.save(function (err) {
+    // Try saving the new user document
+    user.save(function(err) {
+      // If an error occurs, use flash messages to report the error
       if (err) {
-        message = getErrorMessage(err);
+        // Use the error handling method to get the error message
+        var message = getErrorMessage(err);
 
+        // Set the flash messages
         req.flash('error', message);
+
+        // Redirect the user back to the signup page
         return res.redirect('/signup');
       }
+
+      // If the user was created successfully use the Passport 'login' method to login
+      req.login(user, function(err) {
+        // If a login error occurs move to the next middleware
+        if (err) return next(err);
+
+        // Redirect the user back to the main application page
+        return res.redirect('/');
+      });
     });
   } else {
     return res.redirect('/');
   }
 };
 
-exports.signout = function (req, res) {
+// Create a new controller method for signing out
+exports.signout = function(req, res) {
+  // Use the Passport 'logout' method to logout
   req.logout();
+
+  // Redirect the user back to the main application page
   res.redirect('/');
 };
 
-exports.list = function (req, res, next) {
-  User.find({}, function (err, users) {
-    if (err) {
-      return next(err);
-    } else {
-      res.json(users);
-    }
-  });
-};
-
-exports.read = function (req, res) {
-  res.json(req.user);
-};
-
-exports.userById = function (req, res, next, id) {
-  User.findOne({
-    _id: id
-  }, function (err, user) {
-    if (err) {
-      return next(err);
-    } else {
-      req.user = user;
-      next();
-    }
-  });
-};
-
-exports.update = function (req, res, next) {
-  User.findByIdAndUpdate(
-    req.user.id,
-    req.body,
-    function (err, user) {
-      if (err) {
-        return next(err);
-      } else {
-        res.json(user);
-      }
-    });
-};
-
-exports.delete = function (req, res, next) {
-  req.user.remove(function (err) {
-    if (err) {
-      return next(err);
-    }
-    else {
-      res.json(req.user);
-    }
-  });
-};
-
+// Create a new controller middleware that is used to authorize authenticated operations 
 exports.requiresLogin = function(req, res, next) {
+  // If a user is not authenticated send the appropriate error message
   if (!req.isAuthenticated()) {
     return res.status(401).send({
       message: 'User is not logged in'
     });
   }
 
+  // Call the next middleware
   next();
 };

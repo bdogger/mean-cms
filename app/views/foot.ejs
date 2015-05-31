@@ -1,12 +1,12 @@
-
-
 <!-- bower:js -->
 <script src="lib/jquery/dist/jquery.js"></script>
 <script src="lib/angular/angular.js"></script>
 <script src="lib/angular-route/angular-route.js"></script>
 <script src="lib/angular-resource/angular-resource.js"></script>
 <script src="lib/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
-<script src="lib/ng-ckeditor/ng-ckeditor.js"></script>
+<script src="lib/ckeditor/ckeditor.js"></script>
+<script src="lib/angular-ckeditor/angular-ckeditor.js"></script>
+
 <!-- endbower -->
 
 <script src="//cdn.ckeditor.com/4.4.7/standard/ckeditor.js"></script>
@@ -18,5 +18,12 @@
 <script type="text/javascript" src="/scripts/controllers/index.client.controller.js"></script>
 <script type="text/javascript" src="/scripts/controllers/pages.client.controller.js"></script>
 <script type="text/javascript" src="/scripts/directives/pages-header.client.directive.js"></script>
+
+<script type="text/javascript">
+    tinymce.init({
+        valid_elements: '*[*]'
+    });
+</script>
+
 </body>
 </html>

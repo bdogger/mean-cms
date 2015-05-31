@@ -1,9 +1,9 @@
 angular.module('samuraiSoftware')
-.directive('pagesHeader', ['Pages', function(Pages){
+  .directive('pagesHeader', ['Pages', function (Pages) {
     return {
       templateUrl: '/templates/pages.client.header.html',
       restrict: 'E',
-      link: function(scope) {
+      link: function (scope) {
         scope.pages = Pages.query();
       }
     }

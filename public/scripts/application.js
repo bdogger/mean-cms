@@ -1,4 +1,4 @@
 angular.module('samuraiSoftware',
   ['ngRoute',
-    'ngCkeditor',
+    'ckeditor',
   'ngResource']);

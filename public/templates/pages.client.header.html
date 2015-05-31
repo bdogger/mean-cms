@@ -1,3 +1,6 @@
 <ul class="nav navbar-nav">
-    <li ng-repeat="page in pages"><a ng-href="/#!/pages/{{page._id}}">{{page.title}}</a></li>
+    <li ng-repeat="page in pages"
+        ng-if="!page.homePage" class="header-link">
+        <a ng-href="/#!/{{page.seoTitle}}">{{page.title}}</a>
+    </li>
 </ul>

@@ -9,6 +9,9 @@ exports.create = function (req, res, next) {
         message: getErrorMessage(err)
       });
     } else {
+      if (page.homePage) {
+        Page.update({_id: {$ne: page.id}, homePage: true}, {$set: {homePage: false}}, {multi: true}).exec();
+      }
       res.json(page);
     }
   });
@@ -16,7 +19,14 @@ exports.create = function (req, res, next) {
 };
 
 exports.list = function (req, res, next) {
-  Page.find().sort('-created').exec(function (err, pages) {
+  var query = {};
+  if (req.query.home) {
+    query.homePage = true;
+  } else if (req.query.seoTitle) {
+    query.seoTitle = req.query.seoTitle;
+  }
+
+  Page.find(query).sort('-created').exec(function (err, pages) {
     if (err) {
       return res.status(400).send({
         message: getErrorMessage(err)
@@ -42,6 +52,8 @@ exports.pageById = function (req, res, next, id) {
 };
 
 exports.update = function (req, res, next) {
+  var isHomePage = req.body.homePage;
+
   Page.findByIdAndUpdate(
     req.page.id,
     req.body,
@@ -49,6 +61,9 @@ exports.update = function (req, res, next) {
       if (err) {
         return next(err);
       } else {
+        if (isHomePage) {
+          Page.update({_id: {$ne: page.id}, homePage: true}, {$set: {homePage: false}}, {multi: true}).exec();
+        }
         res.json(page);
       }
     });
@@ -70,7 +85,7 @@ var getErrorMessage = function (err) {
   if (err.errors) {
     for (var errName in err.errors) {
       if (err.errors[errName].message) {
-        return err.errors[errorName].message;
+        return err.errors[errName].message;
       }
     }
   } else {

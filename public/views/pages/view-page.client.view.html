@@ -1,6 +1,6 @@
-<section ng-controller="PagesController" ng-init="findOne()">
+<section ng-controller="PagesController" ng-init="findOneView()">
+    <div class="row" ng-if="!page.homePage">
 
-    <div class="row">
         <div class="col-lg-2"></div>
         <div class="col-lg-8">
             <h1 ng-bind="page.title"></h1>
@@ -10,4 +10,7 @@
         </div>
         <div class="col-lg-2"></div>
     </div>
+
+    <div ng-bind-html="trustedContent" ng-if="page.homePage"></div>
+
 </section>

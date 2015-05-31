@@ -12,12 +12,17 @@
                                class="form-control"/>
                     </div>
                     <div class="form-group">
+                        <label for="seo-title">SEO Title</label>
+                        <input type="text" id="seo-title" ng-model="seoTitle" placeholder="SEO Title" required
+                               class="form-control"/>
+                    </div>
+                    <div class="form-group">
                         <label for="home-page">Set as Home Page</label>
-                        <input type="checkbox" id="home-page" ng-model="homePage" />
+                        <input type="checkbox" id="home-page" ng-model="homePage" value="true"/>
                     </div>
                     <div form-group>
                         <label for="content">Content</label>
-                        <textarea ckeditor ng-model="content" id="content" cols="30" rows="10" placeholder="Content"
+                        <textarea ckeditor="options" ng-model="content" id="content" cols="30" rows="10" placeholder="Content"
                                   class="form-control"></textarea>
                     </div>
                     <div class="form-group">

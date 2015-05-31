@@ -12,7 +12,7 @@ angular.module('samuraiSoftware')
       .when('/pages/create', {
         templateUrl: '/views/pages/create-page.client.view.html'
       })
-      .when('/pages/:pageId', {
+      .when('/:seoTitle', {
         templateUrl: '/views/pages/view-page.client.view.html'
       })
       .when('/pages/:pageId/edit', {

@@ -8,6 +8,12 @@ var PageSchema = new Schema({
     unique: true,
     required: 'Title Required'
   },
+  seoTitle: {
+    type: String,
+    trim: true,
+    unique: true,
+    required: 'SEO Title Required'
+  },
   homePage: {
     type: Boolean,
     default: false
